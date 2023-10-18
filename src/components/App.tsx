@@ -1,12 +1,11 @@
-import { CatsList } from "./CatsList/CatsList"
+import { CatsList } from './CatsList/CatsList';
 
 function App() {
-
   return (
     <div>
-      <CatsList/>
+      <CatsList />
     </div>
-  )
+  );
 }
 
-export default App
+export default App;

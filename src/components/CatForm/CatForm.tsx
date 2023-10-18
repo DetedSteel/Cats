@@ -2,8 +2,11 @@ import { Button, Checkbox, FormControlLabel, TextField } from '@mui/material';
 import { useFormik } from 'formik';
 import { FunctionComponent } from 'react';
 import styles from './catform.module.css';
+import { useNavigate } from 'react-router-dom';
 
 export const CatForm: FunctionComponent = () => {
+  const navigate = useNavigate();
+
   const formik = useFormik({
     initialValues: {
       name: '',
@@ -32,6 +35,7 @@ export const CatForm: FunctionComponent = () => {
         }),
       }).then(response => {
         console.log(response.status);
+        navigate('/');
       });
     },
   });
