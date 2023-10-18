@@ -25,6 +25,7 @@ export const Cat:FunctionComponent = () => {
       <h1>{cat?.name}</h1>
       <p>{cat?.age} года</p>
       <p>{cat?.description}</p>
+      <p>{cat?.rate}/5</p>
       <img src={cat?.image} alt="" />
     </div>
   )
