@@ -5,15 +5,15 @@ import { CatForm } from "../components/CatForm/CatForm";
 
 export const router = createHashRouter([
   {
-    path: "/",
+    path: "/Cats",
     element: <App />,
   },
   {
-    path: "/cats/:id",
+    path: "Cats/cats/:id",
     element: <Cat />
   },
   {
-    path: '/add',
+    path: 'Cats/add',
     element: <CatForm/>
   }
 ]);
