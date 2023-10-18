@@ -9,11 +9,11 @@ export const router = createHashRouter([
     element: <App />,
   },
   {
-    path: "Cats/cats/:id",
+    path: "/Cats/cats/:id",
     element: <Cat />
   },
   {
-    path: 'Cats/add',
+    path: '/Cats/add',
     element: <CatForm/>
   }
 ]);
