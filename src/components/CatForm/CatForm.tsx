@@ -25,7 +25,7 @@ export const CatForm:FunctionComponent = () => {
         body: JSON.stringify({
           id: Date.now(),
           name: formik.values.name,
-          image: formik.values.name,
+          image: formik.values.image,
           age: formik.values.age,
           rate: formik.values.rate,
           favorite: Boolean(formik.values.favorite.length),
