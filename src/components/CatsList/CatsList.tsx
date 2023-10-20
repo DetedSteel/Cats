@@ -17,20 +17,5 @@ export const CatsList: FunctionComponent = () => {
     );
   }, []);
 
-  return (
-    <div>
-      {cats?.map(e => (
-        <CatCard
-          key={e.id}
-          id={e.id}
-          name={e.name}
-          image={e.image}
-          age={e.age}
-          rate={e.rate}
-          favorite={e.favorite}
-          description={e.description}
-        />
-      ))}
-    </div>
-  );
+  return <div>{cats?.map(e => <CatCard key={e.id} card={e} />)}</div>;
 };

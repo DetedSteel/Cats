@@ -5,7 +5,7 @@ import { CatForm } from '../components/CatForm/CatForm';
 
 export const router = createHashRouter([
   {
-    path: '/',
+    path: '/*',
     element: <App />,
   },
   {
