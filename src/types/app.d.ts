@@ -15,3 +15,16 @@ export interface CatT {
   favorite: boolean;
   description: string;
 }
+
+export interface editCatProps {
+  id: number;
+}
+
+export interface CatContext {
+  id: number;
+  setId: (value: React.SetStateAction<number>) => void;
+  catUpdateFn: (value: React.SetStateAction<boolean>) => void;
+  catUpdate: boolean;
+  updated: boolean;
+  setUpdated: (value: React.SetStateAction<boolean>) => void;
+}
