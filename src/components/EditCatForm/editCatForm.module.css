@@ -21,3 +21,19 @@
   border-radius: 40px;
   padding: 30px;
 }
+
+.close {
+  position: absolute;
+  top: 50px;
+  right: 50px;
+  border-radius: 5px;
+  border: 2px solid #d32f2f;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+}
+
+.close:hover {
+  background-color: rgba(211, 47, 47, 0.5);
+}

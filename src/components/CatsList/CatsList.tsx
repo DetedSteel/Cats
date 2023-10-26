@@ -5,17 +5,32 @@ import { CatsContext } from '../../Context/CatsContext';
 import { EditCatForm } from '../EditCatForm/EditCatForm';
 import { LoginContext } from '../../Context/LoginContext';
 import { Outlet, useNavigate } from 'react-router-dom';
-import { Button } from '@mui/material';
+import { Button, useMediaQuery } from '@mui/material';
 import styles from './catslist.module.css';
 
 export const CatsList: FunctionComponent = () => {
   const [cats, setCat] = useState<CatT[]>();
   const navigate = useNavigate();
+  const matchesM = useMediaQuery('(max-width:1330px)');
+  const matchesS = useMediaQuery('(max-width:940px)');
+  const matchesXS = useMediaQuery('(max-width:550px)');
 
   const catContext = useContext(CatsContext);
   const loginContext = useContext(LoginContext);
 
   console.log(loginContext.username);
+
+  function adaptive(): React.CSSProperties {
+    if (matchesXS) {
+      return { margin: '40px auto', gridTemplateColumns: 'repeat(1, 1fr)' };
+    } else if (matchesS) {
+      return { gridTemplateColumns: 'repeat(1, 1fr)' };
+    } else if (matchesM) {
+      return { gridTemplateColumns: 'repeat(2, 1fr)' };
+    } else {
+      return {};
+    }
+  }
 
   useEffect(() => {
     fetch(`https://cats.petiteweb.dev/api/single/${loginContext.username}/show/`, {
@@ -32,7 +47,9 @@ export const CatsList: FunctionComponent = () => {
   return (
     <div className={styles.container}>
       {Boolean(cats?.length) ? (
-        <div className={styles.grid}>{cats?.map(e => <CatCard key={e.id} card={e} />)}</div>
+        <div className={styles.grid} style={adaptive()}>
+          {cats?.map(e => <CatCard key={e.id} card={e} />)}
+        </div>
       ) : (
         <h1 className={styles.addFirst}>Добавьте своего первого котика!</h1>
       )}

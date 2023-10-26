@@ -1,4 +1,4 @@
-import { FC, RefObject, useContext, useEffect, useRef, useState } from 'react';
+import { FC, KeyboardEvent, RefObject, useContext, useEffect, useRef, useState } from 'react';
 import styles from './login.module.css';
 import { Button, TextField } from '@mui/material';
 import { CatsContext } from '../../Context/CatsContext';
@@ -47,9 +47,22 @@ export const Login: FC = () => {
     <LoginContext.Provider value={{ username: username, setUsername: setUsername }}>
       {catContext.logined && <Header />}
       {!catContext.logined && (
-        <div className={styles.container}>
+        <div
+          className={styles.container}
+          onKeyDown={(e: KeyboardEvent<HTMLDivElement>) => {
+            if (e.code === 'Enter') {
+              handleLogin();
+            }
+          }}
+          tabIndex={1}
+        >
           <h1 className={styles.header}>Введите имя пользователя</h1>
           <TextField
+            onKeyDown={(e: KeyboardEvent<HTMLInputElement>) => {
+              if (e.code === 'Enter') {
+                handleLogin();
+              }
+            }}
             value={username}
             helperText={error.length > 0 ? error : ''}
             error={Boolean(error)}

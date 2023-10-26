@@ -7,6 +7,7 @@ import { CatT } from '../../types/app';
 import { useNavigate } from 'react-router-dom';
 import { LoginContext } from '../../Context/LoginContext';
 import { catSchema } from '../../validation/schemas';
+import CloseIcon from '@mui/icons-material/Close';
 
 export const EditCatForm: FC = () => {
   const navigate = useNavigate();
@@ -86,6 +87,14 @@ export const EditCatForm: FC = () => {
 
   return (
     <div className={styles.container} style={{ height: `${h}px` }} ref={scrollTargetRef}>
+      <div
+        className={styles.close}
+        onClick={() => {
+          catContext.catUpdateFn(false);
+        }}
+      >
+        <CloseIcon color="error" sx={{ fontSize: 50 }} />
+      </div>
       <form onSubmit={formik.handleSubmit} className={styles.form} noValidate>
         <TextField
           onChange={formik.handleChange}
@@ -97,6 +106,8 @@ export const EditCatForm: FC = () => {
           required={true}
           variant="outlined"
           label="Имя котика"
+          helperText={formik.touched.name ? formik.errors.name : ''}
+          error={formik.touched.name && Boolean(formik.errors.name)}
         />
         <TextField
           onChange={formik.handleChange}
@@ -108,6 +119,8 @@ export const EditCatForm: FC = () => {
           required={true}
           variant="outlined"
           label="Возраст котика"
+          helperText={formik.touched.age ? formik.errors.age : ''}
+          error={formik.touched.age && Boolean(formik.errors.age)}
         />
         <TextField
           onChange={formik.handleChange}
@@ -119,6 +132,8 @@ export const EditCatForm: FC = () => {
           required={true}
           variant="outlined"
           label="Ссылка на фотку"
+          helperText={formik.touched.image ? formik.errors.image : ''}
+          error={formik.touched.image && Boolean(formik.errors.image)}
         />
         <TextField
           onChange={formik.handleChange}
@@ -130,6 +145,8 @@ export const EditCatForm: FC = () => {
           required={true}
           variant="outlined"
           label="Ваша оценка от 1 до 5"
+          helperText={formik.touched.rate ? formik.errors.rate : ''}
+          error={formik.touched.rate && Boolean(formik.errors.rate)}
         />
         <FormControlLabel
           control={

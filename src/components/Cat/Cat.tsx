@@ -1,10 +1,12 @@
 import { FunctionComponent, useContext, useEffect, useState } from 'react';
-import { useParams } from 'react-router-dom';
+import { useNavigate, useParams } from 'react-router-dom';
 import { CatT } from '../../types/app';
 import { LoginContext } from '../../Context/LoginContext';
 import styles from './cat.module.css';
+import UndoIcon from '@mui/icons-material/Undo';
 
 export const Cat: FunctionComponent = () => {
+  const navigate = useNavigate();
   const params = useParams();
   const loginContext = useContext(LoginContext);
 
@@ -38,7 +40,12 @@ export const Cat: FunctionComponent = () => {
 
   return (
     <div className={styles.container}>
-      <h1 className={styles.header}>Имя котика: {cat?.name}</h1>
+      <div className={styles.flex}>
+        <h1 className={styles.header}>Имя котика: {cat?.name}</h1>
+        <div className={styles.backIcon} onClick={() => navigate('/cats')}>
+          <UndoIcon color="error" sx={{ fontSize: 40 }} />
+        </div>
+      </div>
       <div className={styles.desc}>
         <p>
           Возраст: {cat?.age} {ageChoice(cat?.age ? cat.age : 1)}
