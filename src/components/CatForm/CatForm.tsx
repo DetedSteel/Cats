@@ -4,6 +4,7 @@ import { FunctionComponent, useContext } from 'react';
 import styles from './catform.module.css';
 import { useNavigate } from 'react-router-dom';
 import { LoginContext } from '../../Context/LoginContext';
+import { catSchema } from '../../validation/schemas';
 
 export const CatForm: FunctionComponent = () => {
   const navigate = useNavigate();
@@ -18,6 +19,7 @@ export const CatForm: FunctionComponent = () => {
       favorite: 'false',
       description: '',
     },
+    validationSchema: catSchema,
     onSubmit: values => {
       console.log(values);
       fetch(`https://cats.petiteweb.dev/api/single/${loginContext.username}/add`, {
@@ -44,7 +46,7 @@ export const CatForm: FunctionComponent = () => {
 
   return (
     <div>
-      <form onSubmit={formik.handleSubmit} className={styles.form}>
+      <form onSubmit={formik.handleSubmit} className={styles.form} noValidate>
         <TextField
           onChange={formik.handleChange}
           value={formik.values.name}
@@ -53,6 +55,8 @@ export const CatForm: FunctionComponent = () => {
           id="name"
           placeholder="Введите имя котика"
           required={true}
+          helperText={formik.touched.name ? formik.errors.name : ''}
+          error={formik.touched.name && Boolean(formik.errors.name)}
           variant="outlined"
         />
         <TextField
@@ -64,6 +68,8 @@ export const CatForm: FunctionComponent = () => {
           placeholder="Введите возраст котика числом"
           required={true}
           variant="outlined"
+          helperText={formik.touched.age ? formik.errors.age : ''}
+          error={formik.touched.age && Boolean(formik.errors.age)}
         />
         <TextField
           onChange={formik.handleChange}
@@ -74,6 +80,8 @@ export const CatForm: FunctionComponent = () => {
           placeholder="Введите ссылку на картинку из интернета"
           required={true}
           variant="outlined"
+          helperText={formik.touched.image ? formik.errors.image : ''}
+          error={formik.touched.image && Boolean(formik.errors.image)}
         />
         <TextField
           onChange={formik.handleChange}
@@ -84,6 +92,8 @@ export const CatForm: FunctionComponent = () => {
           placeholder="Введите рейтинг от 1 до 5"
           required={true}
           variant="outlined"
+          helperText={formik.touched.rate ? formik.errors.rate : ''}
+          error={formik.touched.rate && Boolean(formik.errors.rate)}
         />
         <FormControlLabel
           control={<Checkbox id="favorite" onChange={formik.handleChange} />}
@@ -100,7 +110,7 @@ export const CatForm: FunctionComponent = () => {
           variant="outlined"
           multiline={true}
         />
-        <Button variant="contained" type="submit">
+        <Button variant="contained" type="submit" className={styles.btn}>
           Добавить котика
         </Button>
       </form>

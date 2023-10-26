@@ -5,9 +5,10 @@ import { CatsContext } from '../../Context/CatsContext';
 import { LoginContext } from '../../Context/LoginContext';
 import { Button } from '@mui/material';
 import DeleteRoundedIcon from '@mui/icons-material/DeleteRounded';
+import styles from './catcard.module.css';
 
 export const CatCard: FC<CardT> = ({ card }) => {
-  const { name, id } = card;
+  const { name, id, image } = card;
 
   const catContext = useContext(CatsContext);
   const loginContext = useContext(LoginContext);
@@ -31,20 +32,27 @@ export const CatCard: FC<CardT> = ({ card }) => {
   }
 
   return (
-    <div>
-      {name}
-      <Link to={`${id}`}>Больше про котика</Link>
-      <Button variant="contained" onClick={() => setContext()}>
-        Редактировать котика
-      </Button>
-      <Button
-        variant="outlined"
-        color="error"
-        startIcon={<DeleteRoundedIcon />}
-        onClick={() => deleteCat()}
-      >
-        Удалить котика
-      </Button>
+    <div className={styles.container}>
+      <div className={styles.cat_info}>
+        <h2 className={styles.header}>{name}</h2>
+        {<img src={image} className={styles.img}></img>}
+        <Link className={styles.link} to={`${id}`}>
+          Больше про котика
+        </Link>
+      </div>
+      <div className={styles.btns}>
+        <Button variant="contained" onClick={() => setContext()}>
+          Редактировать котика
+        </Button>
+        <Button
+          variant="outlined"
+          color="error"
+          startIcon={<DeleteRoundedIcon />}
+          onClick={() => deleteCat()}
+        >
+          Удалить котика
+        </Button>
+      </div>
     </div>
   );
 };

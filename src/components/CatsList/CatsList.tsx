@@ -6,6 +6,7 @@ import { EditCatForm } from '../EditCatForm/EditCatForm';
 import { LoginContext } from '../../Context/LoginContext';
 import { Outlet, useNavigate } from 'react-router-dom';
 import { Button } from '@mui/material';
+import styles from './catslist.module.css';
 
 export const CatsList: FunctionComponent = () => {
   const [cats, setCat] = useState<CatT[]>();
@@ -29,11 +30,11 @@ export const CatsList: FunctionComponent = () => {
   }, [catContext.updated]);
 
   return (
-    <div>
+    <div className={styles.container}>
       {cats?.map(e => <CatCard key={e.id} card={e} />)}
       {catContext.catUpdate && <EditCatForm />}
       <Button onClick={() => navigate('/add')} variant="contained">
-        Add
+        Добавить нового котика!
       </Button>
       <Outlet />
     </div>
