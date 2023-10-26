@@ -1,11 +1,13 @@
 import { Button, Checkbox, FormControlLabel, TextField } from '@mui/material';
 import { useFormik } from 'formik';
-import { FunctionComponent } from 'react';
+import { FunctionComponent, useContext } from 'react';
 import styles from './catform.module.css';
 import { useNavigate } from 'react-router-dom';
+import { LoginContext } from '../../Context/LoginContext';
 
 export const CatForm: FunctionComponent = () => {
   const navigate = useNavigate();
+  const loginContext = useContext(LoginContext);
 
   const formik = useFormik({
     initialValues: {
@@ -18,7 +20,7 @@ export const CatForm: FunctionComponent = () => {
     },
     onSubmit: values => {
       console.log(values);
-      fetch('https://cats.petiteweb.dev/api/single/DS/add', {
+      fetch(`https://cats.petiteweb.dev/api/single/${loginContext.username}/add`, {
         method: 'post',
         headers: {
           Accept: 'application/json',
@@ -35,7 +37,7 @@ export const CatForm: FunctionComponent = () => {
         }),
       }).then(response => {
         console.log(response.status);
-        navigate('/');
+        navigate('/cats');
       });
     },
   });

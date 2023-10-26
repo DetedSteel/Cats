@@ -27,4 +27,11 @@ export interface CatContext {
   catUpdate: boolean;
   updated: boolean;
   setUpdated: (value: React.SetStateAction<boolean>) => void;
+  logined: boolean;
+  setLogined: (value: React.SetStateAction<boolean>) => void;
+}
+
+export interface LoginContextT {
+  username: string;
+  setUsername: (value: React.SetStateAction<string>) => void;
 }

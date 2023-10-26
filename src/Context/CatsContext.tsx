@@ -8,6 +8,8 @@ const defaultState: CatContext = {
   catUpdate: false,
   updated: false,
   setUpdated: function () {},
+  logined: false,
+  setLogined: function () {},
 };
 
 export const CatsContext = createContext<CatContext>(defaultState);

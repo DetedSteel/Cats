@@ -5,11 +5,13 @@ import styles from './editCatForm.module.css';
 import { CatsContext } from '../../Context/CatsContext';
 import { CatT } from '../../types/app';
 import { useNavigate } from 'react-router-dom';
+import { LoginContext } from '../../Context/LoginContext';
 
 export const EditCatForm: FC = () => {
   const navigate = useNavigate();
 
   const catContext = useContext(CatsContext);
+  const loginContext = useContext(LoginContext);
 
   const [curCat, setCat] = useState<CatT>();
 
@@ -23,22 +25,25 @@ export const EditCatForm: FC = () => {
       description: curCat ? curCat.description : '',
     },
     onSubmit: () => {
-      fetch(`https://cats.petiteweb.dev/api/single/DS/update/${catContext.id}`, {
-        method: 'put',
-        headers: {
-          Accept: 'application/json',
-          'Content-Type': 'application/json',
+      fetch(
+        `https://cats.petiteweb.dev/api/single/${loginContext.username}/update/${catContext.id}`,
+        {
+          method: 'put',
+          headers: {
+            Accept: 'application/json',
+            'Content-Type': 'application/json',
+          },
+          body: JSON.stringify({
+            id: catContext.id,
+            name: formik.values.name,
+            image: formik.values.image,
+            age: formik.values.age,
+            rate: formik.values.rate,
+            favorite: formik.values.favorite,
+            description: formik.values.description,
+          }),
         },
-        body: JSON.stringify({
-          id: Date.now(),
-          name: formik.values.name,
-          image: formik.values.image,
-          age: formik.values.age,
-          rate: formik.values.rate,
-          favorite: formik.values.favorite,
-          description: formik.values.description,
-        }),
-      }).then(response => {
+      ).then(response => {
         catContext.setUpdated(!catContext.updated);
         console.log(response.status);
       });
@@ -48,24 +53,24 @@ export const EditCatForm: FC = () => {
   });
 
   useEffect(() => {
-    fetch(`https://cats.petiteweb.dev/api/single/DS/show/`, { method: 'get' }).then(
-      function (response) {
-        if (response.ok) {
-          response.json().then(data => {
-            const cat: CatT = data.find((e: CatT) => e.id === catContext.id);
-            setCat(cat);
-            formik.values.name = cat.name;
-            formik.values.image = cat.image;
-            formik.values.age = cat.age;
-            formik.values.rate = cat.rate;
-            formik.values.favorite = cat.favorite;
-            formik.values.description = cat.description;
-          });
-        } else {
-          throw new Error('Ошибка при выполнении запроса');
-        }
-      },
-    );
+    fetch(`https://cats.petiteweb.dev/api/single/${loginContext.username}/show/`, {
+      method: 'get',
+    }).then(function (response) {
+      if (response.ok) {
+        response.json().then(data => {
+          const cat: CatT = data.find((e: CatT) => e.id === catContext.id);
+          setCat(cat);
+          formik.values.name = cat.name;
+          formik.values.image = cat.image;
+          formik.values.age = cat.age;
+          formik.values.rate = cat.rate;
+          formik.values.favorite = cat.favorite;
+          formik.values.description = cat.description;
+        });
+      } else {
+        throw new Error('Ошибка при выполнении запроса');
+      }
+    });
   }, []);
 
   return (
