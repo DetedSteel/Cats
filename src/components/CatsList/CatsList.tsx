@@ -31,9 +31,13 @@ export const CatsList: FunctionComponent = () => {
 
   return (
     <div className={styles.container}>
-      {cats?.map(e => <CatCard key={e.id} card={e} />)}
+      {Boolean(cats?.length) ? (
+        <div className={styles.grid}>{cats?.map(e => <CatCard key={e.id} card={e} />)}</div>
+      ) : (
+        <h1 className={styles.addFirst}>Добавьте своего первого котика!</h1>
+      )}
       {catContext.catUpdate && <EditCatForm />}
-      <Button onClick={() => navigate('/add')} variant="contained">
+      <Button className={styles.btn} onClick={() => navigate('/add')} variant="contained">
         Добавить нового котика!
       </Button>
       <Outlet />

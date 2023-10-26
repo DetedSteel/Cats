@@ -1,8 +1,8 @@
 import { FunctionComponent, useContext, useEffect, useState } from 'react';
-// import { CatPropT } from "../../types/app";
 import { useParams } from 'react-router-dom';
 import { CatT } from '../../types/app';
 import { LoginContext } from '../../Context/LoginContext';
+import styles from './cat.module.css';
 
 export const Cat: FunctionComponent = () => {
   const params = useParams();
@@ -22,13 +22,36 @@ export const Cat: FunctionComponent = () => {
     });
   }, [params.id]);
 
+  function ageChoice(age: number) {
+    if (age >= 5 && age <= 20) {
+      return 'лет';
+    }
+    const strAge = age.toString();
+    if (strAge.endsWith('1')) {
+      return 'год';
+    } else if (strAge.endsWith('2') || strAge.endsWith('3') || strAge.endsWith('4')) {
+      return 'года';
+    } else {
+      return 'лет';
+    }
+  }
+
   return (
-    <div>
-      <h1>{cat?.name}</h1>
-      <p>{cat?.age} года</p>
-      <p>{cat?.description}</p>
-      <p>{cat?.rate}/5</p>
-      <img src={cat?.image} alt="" />
+    <div className={styles.container}>
+      <h1 className={styles.header}>Имя котика: {cat?.name}</h1>
+      <div className={styles.desc}>
+        <p>
+          Возраст: {cat?.age} {ageChoice(cat?.age ? cat.age : 1)}
+        </p>
+        <p>Описание котика: {cat?.description === '' ? 'Нет описания :(' : cat?.description}</p>
+        <p>{cat?.rate} лучших котиков из 5</p>
+        <p>
+          {cat?.favorite
+            ? 'Это ваш любимый котик'
+            : 'Это не самый любимый котик, но он тоже милашка!'}
+        </p>
+      </div>
+      <img className={styles.img} src={cat?.image} alt="" />
     </div>
   );
 };

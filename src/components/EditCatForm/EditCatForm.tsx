@@ -1,14 +1,21 @@
 import { Button, Checkbox, FormControlLabel, TextField } from '@mui/material';
 import { useFormik } from 'formik';
-import { FC, useContext, useEffect, useState } from 'react';
+import { FC, RefObject, useContext, useEffect, useRef, useState } from 'react';
 import styles from './editCatForm.module.css';
 import { CatsContext } from '../../Context/CatsContext';
 import { CatT } from '../../types/app';
 import { useNavigate } from 'react-router-dom';
 import { LoginContext } from '../../Context/LoginContext';
+import { catSchema } from '../../validation/schemas';
 
 export const EditCatForm: FC = () => {
   const navigate = useNavigate();
+
+  const scrollTargetRef = useRef() as RefObject<HTMLInputElement>;
+
+  function scrollHandle() {
+    scrollTargetRef.current?.scrollIntoView({ behavior: 'smooth', block: 'start' });
+  }
 
   const catContext = useContext(CatsContext);
   const loginContext = useContext(LoginContext);
@@ -24,6 +31,7 @@ export const EditCatForm: FC = () => {
       favorite: curCat ? curCat.favorite : false,
       description: curCat ? curCat.description : '',
     },
+    validationSchema: catSchema,
     onSubmit: () => {
       fetch(
         `https://cats.petiteweb.dev/api/single/${loginContext.username}/update/${catContext.id}`,
@@ -48,7 +56,7 @@ export const EditCatForm: FC = () => {
         console.log(response.status);
       });
       catContext.catUpdateFn(false);
-      navigate('/');
+      navigate('/cats');
     },
   });
 
@@ -71,11 +79,14 @@ export const EditCatForm: FC = () => {
         throw new Error('Ошибка при выполнении запроса');
       }
     });
+    scrollHandle();
   }, []);
 
+  const h = document.documentElement.scrollHeight;
+
   return (
-    <div className={styles.container}>
-      <form onSubmit={formik.handleSubmit} className={styles.form}>
+    <div className={styles.container} style={{ height: `${h}px` }} ref={scrollTargetRef}>
+      <form onSubmit={formik.handleSubmit} className={styles.form} noValidate>
         <TextField
           onChange={formik.handleChange}
           value={formik.values.name}
@@ -85,6 +96,7 @@ export const EditCatForm: FC = () => {
           placeholder={curCat ? curCat?.name : 'Введите имя котика'}
           required={true}
           variant="outlined"
+          label="Имя котика"
         />
         <TextField
           onChange={formik.handleChange}
@@ -95,6 +107,7 @@ export const EditCatForm: FC = () => {
           placeholder={curCat ? curCat?.age.toString() : 'Введите возраст котика числом'}
           required={true}
           variant="outlined"
+          label="Возраст котика"
         />
         <TextField
           onChange={formik.handleChange}
@@ -105,6 +118,7 @@ export const EditCatForm: FC = () => {
           placeholder={curCat ? curCat?.image : 'Введите ссылку на картинку из интернета'}
           required={true}
           variant="outlined"
+          label="Ссылка на фотку"
         />
         <TextField
           onChange={formik.handleChange}
@@ -115,6 +129,7 @@ export const EditCatForm: FC = () => {
           placeholder={curCat ? curCat?.rate.toString() : 'Введите рейтинг от 1 до 5'}
           required={true}
           variant="outlined"
+          label="Ваша оценка от 1 до 5"
         />
         <FormControlLabel
           control={
@@ -133,12 +148,12 @@ export const EditCatForm: FC = () => {
           name=""
           id="description"
           placeholder={curCat ? curCat?.description : 'Введите опписаниу котика'}
-          required={true}
           variant="outlined"
           multiline={true}
+          label="Описание котика"
         />
         <Button variant="contained" type="submit">
-          Добавить котика
+          Изменить котика
         </Button>
       </form>
     </div>

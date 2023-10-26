@@ -11,16 +11,30 @@ export const Login: FC = () => {
   const navigate = useNavigate();
 
   const [username, setUsername] = useState(localStorage.getItem('username') ?? '');
+  const [error, setError] = useState('');
 
   const catContext = useContext(CatsContext);
   const loginContext = useContext(LoginContext);
 
   function handleLogin(): void {
-    loginContext.username = username;
-    catContext.setLogined(true);
-    navigate('/cats');
-    localStorage.setItem('username', username);
+    if (username.length >= 1) {
+      loginContext.username = username;
+      catContext.setLogined(true);
+      navigate('/cats');
+      localStorage.setItem('username', username);
+      setError('');
+    } else {
+      setError('Имя пользователя не может быть пустым!');
+    }
   }
+
+  useEffect(() => {
+    if (username.length >= 1) {
+      setError('');
+    } else {
+      setError('Имя пользователя не может быть пустым!');
+    }
+  }, [username]);
 
   useEffect(() => {
     if (username) {
@@ -34,9 +48,11 @@ export const Login: FC = () => {
       {catContext.logined && <Header />}
       {!catContext.logined && (
         <div className={styles.container}>
-          <h1>Введите имя пользователя</h1>
+          <h1 className={styles.header}>Введите имя пользователя</h1>
           <TextField
             value={username}
+            helperText={error.length > 0 ? error : ''}
+            error={Boolean(error)}
             onChange={(e: React.ChangeEvent<HTMLInputElement>) => {
               setUsername(e.target.value);
             }}

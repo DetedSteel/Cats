@@ -4,9 +4,14 @@
   left: calc(100vw / 2 - 250px);
   width: 500px;
   height: 500px;
-  box-shadow: 0 0 5px 10px black;
+  box-shadow: 0 0 5px 10px #4791db;
   display: flex;
   flex-direction: column;
   align-items: center;
   justify-content: center;
+  gap: 40px;
+}
+
+.header {
+  color: #4791db;
 }
