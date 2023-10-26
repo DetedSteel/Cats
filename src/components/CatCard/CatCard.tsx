@@ -3,6 +3,8 @@ import { CardT } from '../../types/app';
 import { Link } from 'react-router-dom';
 import { CatsContext } from '../../Context/CatsContext';
 import { LoginContext } from '../../Context/LoginContext';
+import { Button } from '@mui/material';
+import DeleteRoundedIcon from '@mui/icons-material/DeleteRounded';
 
 export const CatCard: FC<CardT> = ({ card }) => {
   const { name, id } = card;
@@ -32,8 +34,17 @@ export const CatCard: FC<CardT> = ({ card }) => {
     <div>
       {name}
       <Link to={`${id}`}>Больше про котика</Link>
-      <button onClick={() => setContext()}>Редактировать котика</button>
-      <button onClick={() => deleteCat()}>Удалить котика</button>
+      <Button variant="contained" onClick={() => setContext()}>
+        Редактировать котика
+      </Button>
+      <Button
+        variant="outlined"
+        color="error"
+        startIcon={<DeleteRoundedIcon />}
+        onClick={() => deleteCat()}
+      >
+        Удалить котика
+      </Button>
     </div>
   );
 };
