@@ -1,5 +1,4 @@
 import { FC, KeyboardEvent, RefObject, useContext, useEffect, useRef, useState } from 'react';
-import styles from './login.module.css';
 import { Button, TextField } from '@mui/material';
 import { CatsContext } from '../../Context/CatsContext';
 import { LoginContext } from '../../Context/LoginContext';
@@ -48,7 +47,7 @@ export const Login: FC = () => {
       {catContext.logined && <Header />}
       {!catContext.logined && (
         <div
-          className={styles.container}
+          className="gap-10 flex flex-col justify-center items-center w-[500px] h-[500px] shadow-lg shadow-blue absolute top-[calc(100vh/2-250px)] left-[calc(100vw/2-250px)] border-4 border-blue rounded-[40px]"
           onKeyDown={(e: KeyboardEvent<HTMLDivElement>) => {
             if (e.code === 'Enter') {
               handleLogin();
@@ -56,7 +55,7 @@ export const Login: FC = () => {
           }}
           tabIndex={1}
         >
-          <h1 className={styles.header}>Введите имя пользователя</h1>
+          <h1 className="font-roboto text-blue text-3xl font-semibold">Введите имя пользователя</h1>
           <TextField
             onKeyDown={(e: KeyboardEvent<HTMLInputElement>) => {
               if (e.code === 'Enter') {
