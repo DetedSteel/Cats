@@ -1,6 +1,6 @@
 import { Button, Checkbox, FormControlLabel, TextField } from '@mui/material';
 import { useFormik } from 'formik';
-import { FC, RefObject, useContext, useEffect, useRef, useState } from 'react';
+import { ChangeEvent, FC, RefObject, useContext, useEffect, useRef, useState } from 'react';
 import styles from './editCatForm.module.css';
 import { CatsContext } from '../../Context/CatsContext';
 import { CatT } from '../../types/app';
@@ -8,6 +8,7 @@ import { useNavigate } from 'react-router-dom';
 import { LoginContext } from '../../Context/LoginContext';
 import { catSchema } from '../../validation/schemas';
 import CloseIcon from '@mui/icons-material/Close';
+import { useForm } from 'react-hook-form';
 
 export const EditCatForm: FC = () => {
   const navigate = useNavigate();
@@ -22,6 +23,15 @@ export const EditCatForm: FC = () => {
   const loginContext = useContext(LoginContext);
 
   const [curCat, setCat] = useState<CatT>();
+
+  const {
+    register,
+    handleSubmit,
+    formState: { errors },
+    setValue,
+  } = useForm<CatT>();
+
+  register;
 
   const formik = useFormik({
     initialValues: {
@@ -69,6 +79,7 @@ export const EditCatForm: FC = () => {
         response.json().then(data => {
           const cat: CatT = data.find((e: CatT) => e.id === catContext.id);
           setCat(cat);
+          setValue('name', cat.name);
           formik.values.name = cat.name;
           formik.values.image = cat.image;
           formik.values.age = cat.age;
@@ -96,68 +107,28 @@ export const EditCatForm: FC = () => {
         <CloseIcon color="error" sx={{ fontSize: 50 }} />
       </div>
       <form onSubmit={formik.handleSubmit} className={styles.form} noValidate>
-        <TextField
-          onChange={formik.handleChange}
-          value={formik.values.name}
-          type="text"
-          name=""
-          id="name"
-          placeholder={curCat ? curCat?.name : 'Введите имя котика'}
-          required={true}
-          variant="outlined"
-          label="Имя котика"
-          helperText={formik.touched.name ? formik.errors.name : ''}
-          error={formik.touched.name && Boolean(formik.errors.name)}
-        />
-        <TextField
-          onChange={formik.handleChange}
-          value={formik.values.age}
-          type="text"
-          name=""
-          id="age"
-          placeholder={curCat ? curCat?.age.toString() : 'Введите возраст котика числом'}
-          required={true}
-          variant="outlined"
-          label="Возраст котика"
-          helperText={formik.touched.age ? formik.errors.age : ''}
-          error={formik.touched.age && Boolean(formik.errors.age)}
-        />
-        <TextField
-          onChange={formik.handleChange}
-          value={formik.values.image}
-          type="text"
-          name=""
-          id="image"
-          placeholder={curCat ? curCat?.image : 'Введите ссылку на картинку из интернета'}
-          required={true}
-          variant="outlined"
-          label="Ссылка на фотку"
-          helperText={formik.touched.image ? formik.errors.image : ''}
-          error={formik.touched.image && Boolean(formik.errors.image)}
-        />
-        <TextField
-          onChange={formik.handleChange}
-          value={formik.values.rate}
-          type="text"
-          name=""
-          id="rate"
-          placeholder={curCat ? curCat?.rate.toString() : 'Введите рейтинг от 1 до 5'}
-          required={true}
-          variant="outlined"
-          label="Ваша оценка от 1 до 5"
-          helperText={formik.touched.rate ? formik.errors.rate : ''}
-          error={formik.touched.rate && Boolean(formik.errors.rate)}
-        />
-        <FormControlLabel
-          control={
-            <Checkbox
-              id="favorite"
-              checked={formik.values.favorite || false}
-              onChange={formik.handleChange}
-            />
-          }
-          label="Любимый котик"
-        />
+        <label className="label">
+          <span className="label-text">Имя котика</span>
+        </label>
+        <input className="my-input" {...register('name')} />
+        <label>Возраст котика</label>
+        <input className="my-input" {...register('age')} />
+        <label>Ссылка на картинку</label>
+        <input {...register('image')} className="my-input" />
+        <label>Рейтинг котика</label>
+        <input {...register('rate')} className="my-input" />
+        <label className="label cursor-pointer">
+          <span className="label-text">Любимый котик?</span>
+          <input {...register('favorite')} type="checkbox" className="checkbox-primary checkbox" />
+        </label>
+        <textarea
+          className="textarea textarea-primary resize-none overscroll-none overflow-y-hidden"
+          rows={1}
+          onInput={(e: ChangeEvent<HTMLTextAreaElement>) => {
+            e.currentTarget.style.height = 'auto'
+            e.currentTarget.style.height = `${e.currentTarget.scrollHeight + 2}px`;
+          }}
+        ></textarea>
         <TextField
           onChange={formik.handleChange}
           value={formik.values.description}
